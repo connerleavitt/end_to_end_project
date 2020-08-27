@@ -1,3 +1,3 @@
 #!/bin/bash
 
-for FILE in *.py; do isort $FILE; done
+for FILE in *.py; do echo $FILE; done
