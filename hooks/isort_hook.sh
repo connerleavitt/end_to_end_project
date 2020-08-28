@@ -1,3 +1,3 @@
 #!/bin/bash
 
-for FILE in *.py; do echo $FILE; done
+for FILE in $(git diff --staged --name-only --diff-filter=AMC); do isort $FILE; done
