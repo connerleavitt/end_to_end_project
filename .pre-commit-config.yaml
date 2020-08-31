@@ -7,9 +7,3 @@ repos:
       language: script
       types: [python]
       pass_filenames: false
-    - id: black
-      name: black
-      entry: hooks/black_hook.sh
-      language: script
-      types: [python]
-      pass_filenames: false
