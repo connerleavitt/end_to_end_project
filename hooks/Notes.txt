@@ -1,1 +1,4 @@
+
 This hook runs isort on all Python files that have been staged to be committed. This will make sure that all imports are ordered alphabetically and formatted properly.
+The black hook scans each python file and auto-formats each file according to the black library formatting standards
+The pytest_hook.sh runs a script that runs pytest on all Python files that have been staged to be committed. This script makes sure that the hook succeeds both when all of the tests pass as well as when there are no tests in a file. The hook will fail in any other situation. 
