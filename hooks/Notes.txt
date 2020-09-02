@@ -1,1 +1,1 @@
-Here you can add any notes to the other members of the project
+The black hook scans each python file and auto-formats each file according to the black library formatting standards
