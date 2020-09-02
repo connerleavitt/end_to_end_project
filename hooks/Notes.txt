@@ -1,1 +1,1 @@
-Here you can add any notes to the other members of the project
+The pytest_hook.sh runs a script that runs pytest on all Python files that have been staged to be committed. This script makes sure that the hook succeeds both when all of the tests pass as well as when there are no tests in a file. The hook will fail in any other situation. 
