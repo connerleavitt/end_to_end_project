@@ -1,0 +1,1 @@
+This hook runs isort on all Python files that have been staged to be committed. This will make sure that all imports are ordered alphabetically and formatted properly.
