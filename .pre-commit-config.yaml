@@ -1,0 +1,25 @@
+repos:
+- repo: local
+  hooks:
+    - id: isort
+      name: isort
+      entry: hooks/isort_hook.sh
+      language: script
+      types: [python]
+      pass_filenames: false
+    - id: black
+      name: black
+      entry: hooks/black_hook.sh
+      language: script
+      types: [python]
+      pass_filenames: false
+    - id: pytest
+      name: pytest
+      entry: hooks/pytest_hook.sh
+      language: script
+      types: [python]
+      pass_filenames: false
+-   repo: https://gitlab.com/pycqa/flake8
+    rev: 3.7.9
+    hooks:
+    - id: flake8
