@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#This file will first add the newly made environment to jupyter notebooks and make any hook file executable
+# This file will first add the newly made environment to jupyter notebooks and make any hook file executable
 
 # Add environment to jupyter notebooks
 python -m ipykernel install --user --name=$CONDA_DEFAULT_ENV
