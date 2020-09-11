@@ -1,7 +1,8 @@
-ipykernel==5.3.2
-jupyter==1.0.0
-pytest
-black
-isort
+# The libraries below will be installed upon creation of environment see the make create target
+ipykernel #==5.3.2
+jupyter #==1.0.0
+pytest #==6.0.1
+black #==19.10b0
+isort #==5.5.2
 
 
