@@ -1,4 +1,4 @@
-## Run the makefile by running the "make" command or "make -f makefile.mk"
+## Run the makefile by running the command "make"
 
 ## PREREQUISITES ## files used as input to create the target
 SHELL:=/usr/bin/env bash
