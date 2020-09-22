@@ -1,0 +1,2 @@
+- twitter_secrets.py hold the twitter API secrets. You will need to manually fill these in.
+- twitter_scraping.py holds the code used to pull tweets from tweepy
