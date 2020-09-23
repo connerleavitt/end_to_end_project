@@ -24,12 +24,12 @@ def get_db():
 def create_tweet(tweet: schemas.TweetCreate, db: Session = Depends(get_db)):
     db_tweet = crud.get_tweet(db, tweet_id=tweet.id)
     if db_tweet:
-        raise HTTPException(status_code=400, detail="Tweet already in database")
+        raise HTTPException(status_code=400, detail="Already in database")
     return crud.create_tweet(db=db, tweet=tweet)
 
 
 @app.get("/tweets/", response_model=List[schemas.Tweet])
-def read_tweets(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def read_tweets(limit: int, skip: int = 0, db: Session = Depends(get_db)):
     tweets = crud.get_tweets(db, skip=skip, limit=limit)
     return tweets
 
