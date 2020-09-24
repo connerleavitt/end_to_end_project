@@ -10,3 +10,11 @@ class Tweet(Base):
     text = Column(String, unique=True, index=True)
     favorites = Column(Integer)
     is_retweet = Column(Boolean, default=True)
+
+    def __repr__(self):
+        return "Tweet(id: {}, text: {}, favorites: {}, is_retweet: {})".format(
+            self.id,
+            self.text,
+            self.favorites,
+            self.is_retweet
+        )
