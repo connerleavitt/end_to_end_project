@@ -1,1 +1,1 @@
-[Insert Notes]
+twitter_scraping_example is an example of how to use the Twitter pull from twitter_secrets.py and twitter_scraping.py
