@@ -1,7 +1,7 @@
 from typing import List
 
 from . import models
-from .crud import create_tweet, read_tweet, read_tweets
+from .crud import create_tweet, delete_tweet, read_tweet, read_tweets
 from .main import get_db
 from .schemas import TweetCreate
 
@@ -9,7 +9,7 @@ from .schemas import TweetCreate
 def post_tweets(tweets: List):
     for tweet in tweets:
         tweet_to_add = TweetCreate(
-            text=tweet["tweet"],
+            text=tweet["text"],
             favorites=tweet["favorites"],
             is_retweet=tweet["is_retweet"],
         )
@@ -36,3 +36,12 @@ def get_tweet(tweet_id: int) -> models.Tweet:
     finally:
         db.close()
     return tweet
+
+
+def remove_tweets(ids: List[int]):
+    for tweet_id in ids:
+        try:
+            db = next(get_db())
+            delete_tweet(db, tweet_id)
+        finally:
+            db.close()

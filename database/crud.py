@@ -21,3 +21,8 @@ def create_tweet(db: Session, tweet: schemas.TweetCreate) -> models.Tweet:
     db.commit()
     db.refresh(db_tweet)
     return db_tweet
+
+
+def delete_tweet(db: Session, tweet_id: int) -> models.Tweet:
+    db.query(models.Tweet).filter(models.Tweet.id == tweet_id).delete()
+    db.commit()
