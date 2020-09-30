@@ -4,6 +4,8 @@ from .database import Base
 
 
 class Tweet(Base):
+    """A class defining the tweet object that will be used by the ORM"""
+
     __tablename__ = "tweets"
     # TODO Figure out all the columns we want to use
     id = Column(Integer, primary_key=True, index=True)
@@ -12,9 +14,7 @@ class Tweet(Base):
     is_retweet = Column(Boolean, default=True)
 
     def __repr__(self):
+        """Instances of the class will show the parts of the tweet"""
         return "Tweet(id: {}, text: {}, favorites: {}, is_retweet: {})".format(
-            self.id,
-            self.text,
-            self.favorites,
-            self.is_retweet
+            self.id, self.text, self.favorites, self.is_retweet
         )
