@@ -15,15 +15,14 @@ from twitter_scraping import TwitterClient
 rootpath.append()
 
 from database import models  # noqa: E402
+from database.crud import custom_query  # noqa: E402
 from database.crud import (
     create_tweets,
-    custom_query,  # noqa: E402
     delete_all_tweets,
     delete_tweet,
-    delete_user_tweets,
     read_tweet,
     read_tweets,
-)
+)  # noqa: E402
 from database.main import get_db  # noqa: E402
 from database.schemas import TweetCreate  # noqa: E402
 
@@ -299,14 +298,3 @@ def query_to_df(tweets: List[models.Tweet]) -> pd.DataFrame:
     df["label_funny"] = [tweet.label_funny for tweet in tweets]
 
     return df
-
-
-def filter_db():
-    """Deletes all items from the database that match certain filters"""
-    usernames = ["Kada_soulayman", "SkowoH"]
-    for username in usernames:
-        try:
-            db = next(get_db())
-            delete_user_tweets(db, username)
-        finally:
-            db.close()
