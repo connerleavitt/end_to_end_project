@@ -1,18 +1,39 @@
 from typing import List
 
+import numpy as np
 from sqlalchemy.orm import Session, query
 
 from . import models, schemas
 
 
-def custom_query(db: query.Query):
+# TODO Pull nonlabeled tweets one at a time
+def unlabeled_tweet(db: Session) -> models.Tweet:
+    """Returns a randomly selected unlabeled tweet for manual labeling"""
+    unlabeled_tweets = (
+        db.query(models.Tweet).filter(models.Tweet.label_funny is None).all()
+    )
+    return unlabeled_tweets[np.random.randint(len(unlabeled_tweets))]
+
+
+# TODO Update a tweet with funny/notfunny given its label
+def label_tweet(db: Session, tweet_id: int, man_label: bool):
+    """Updates the manual label for a tweet"""
+    tweet_to_update = db.query(models.Tweet).get(tweet_id)
+    tweet_to_update.label_funny = man_label
+    try:
+        db.commit()
+    except Exception as e:
+        print(e)
+
+
+def custom_query(db: Session) -> query.Query:
     """Returns a sqlalchemy.orm.query.Query object so that custom queries can be written"""
     return db.query(models.Tweet)
 
 
 def read_tweet(db: Session, tweet_id: int) -> models.Tweet:
     """Uses the ORM to query the database for a tweet by its id"""
-    return db.query(models.Tweet).filter(models.Tweet.id == tweet_id).first()
+    return db.query(models.Tweet).get(tweet_id).first()
 
 
 def read_tweets(db: Session, skip: int = 0, limit: int = 100) -> List[models.Tweet]:

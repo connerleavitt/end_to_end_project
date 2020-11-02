@@ -6,7 +6,7 @@ from .database import Base
 class Tweet(Base):
     """A class defining the tweet object that will be used by the ORM"""
 
-    __tablename__ = "tweet_db2"
+    __tablename__ = "tweets"
     id = Column(Integer, primary_key=True, index=True)
     text = Column(String(400), unique=True)
     user = Column(String(100))

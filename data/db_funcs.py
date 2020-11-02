@@ -11,20 +11,21 @@ from sqlalchemy.orm import query
 from tqdm import tqdm
 from twitter_scraping import TwitterClient
 
+# Allows us to import modules from our database package located in a separate directory
 rootpath.append()
 
-from database import models
+from database import models  # noqa: E402
 from database.crud import (
     create_tweets,
-    custom_query,
+    custom_query,  # noqa: E402
     delete_all_tweets,
     delete_tweet,
     delete_user_tweets,
     read_tweet,
     read_tweets,
 )
-from database.main import get_db
-from database.schemas import TweetCreate
+from database.main import get_db  # noqa: E402
+from database.schemas import TweetCreate  # noqa: E402
 
 
 def media_cond(tweet: tweepy.models.Status) -> bool:
@@ -69,12 +70,13 @@ def new_tweets_only(tweet_df: pd.DataFrame) -> int:
         num_tweets = len(new_tweets)
         db = next(get_db())
         # Adds all of the new tweets as a batch
+        print("Tweets filtered. Posting to database...")
         create_tweets(db, new_tweets)
     except Exception as e:
         print(e)
     finally:
         db.close()
-    return num_tweets
+    return num_tweets  # , tweet_text, new_tweets, tweet_df
 
 
 def get_tweets(count: int = 100) -> List[models.Tweet]:
@@ -138,11 +140,11 @@ def search_tweets_to_db(search_query: str, label: bool, count: int = 18000):
     tc = TwitterClient()
 
     # Gets the n=count tweets using the search query
-    print(f"Retrieving {count} tweets from {search_query}...")
+    print(f"Retrieving {count} tweets containing '{search_query}'...")
     tweets = tc.get_search_tweets(count, search_query)
 
     # Formats the tweets into a dataframe
-    print("Tweets received. Formatting...")
+    print("Tweets retrieved. Formatting...")
     # Ensures that the full text of the tweet is used
     df = pd.DataFrame(
         [
@@ -156,7 +158,12 @@ def search_tweets_to_db(search_query: str, label: bool, count: int = 18000):
     # The user who tweeted/retweeted the tweet
     df["user"] = [tweet._json["user"]["screen_name"] for tweet in tweets]
     # Unescapes html entities ('&amp;' -> '&') and removes user handles ('@jack' -> '@')
-    df["text"] = df["text"].apply(lambda x: html.unescape(re.sub(r"@\w+", "@", x)))
+    df["text"] = df["text"].apply(
+        lambda x: html.unescape(re.sub(r"@\w+", "@", x))
+        .lower()
+        .replace("…", "...")
+        .replace("\xa0", " ")
+    )
     df["search_query"] = search_query
     # Numerical engagement data that may be used for analysis
     df["favorite_count"] = [tweet._json["favorite_count"] for tweet in tweets]
@@ -183,9 +190,13 @@ def search_tweets_to_db(search_query: str, label: bool, count: int = 18000):
     df.drop_duplicates(subset=["text"], inplace=True)
 
     # Adds all of the tweets in the dataframe to the database
-    print("Tweets formatted. Posting to database...")
+    print("Tweets formatted. Filtering tweets...")
     num_tweets = new_tweets_only(df)
     print(f"{num_tweets} tweets added database in {time.time() - start} s")
+    rl = tc.api.rate_limit_status()["resources"]["search"]["/search/tweets"]
+    print(
+        f'You can pull {rl["remaining"]*100} more search tweets in the next {int((rl["reset"] - time.time()) // 60)} min {int(((rl["reset"] - time.time()) % 60))} sec'
+    )
 
 
 def user_tweets_to_db(user_handle: str, label: bool, count: int = 18000):
@@ -198,7 +209,7 @@ def user_tweets_to_db(user_handle: str, label: bool, count: int = 18000):
     tweets = tc.get_user_tweets(count, user_handle)
 
     # Formats the tweets into a dataframe
-    print("Tweets received. Formatting...")
+    print("Tweets retrieved. Formatting...")
     # Ensures that the full text of the tweet is used
     df = pd.DataFrame(
         [
@@ -221,7 +232,12 @@ def user_tweets_to_db(user_handle: str, label: bool, count: int = 18000):
     # The user who tweeted/retweeted the tweet
     df["user"] = [tweet._json["user"]["screen_name"] for tweet in tweets]
     # Unescapes html entities ('&amp;' -> '&') and removes user handles ('@jack' -> '@')
-    df["text"] = df["text"].apply(lambda x: html.unescape(re.sub(r"@\w+", "@", x)))
+    df["text"] = df["text"].apply(
+        lambda x: html.unescape(re.sub(r"@\w+", "@", x))
+        .lower()
+        .replace("…", "...")
+        .replace("\xa0", " ")
+    )
     # An '@' is prepended to the user handle to differentiate between search and user queries
     df["search_query"] = "@" + user_handle
     # Numerical engagement data that may be used for analysis
@@ -249,9 +265,14 @@ def user_tweets_to_db(user_handle: str, label: bool, count: int = 18000):
     df.drop_duplicates(subset=["text"], inplace=True)
 
     # Adds all of the tweets in the dataframe to the database
-    print("Tweets formatted. Posting to database...")
+    print("Tweets formatted. Filtering tweets...")
     num_tweets = new_tweets_only(df)
     print(f"{num_tweets} tweets added database in {time.time() - start} s")
+    rl = tc.api.rate_limit_status()["resources"]["statuses"]["/statuses/user_timeline"]
+    print(
+        f'You can pull {rl["remaining"]*100} more user tweets in the next {int((rl["reset"] - time.time()) // 60)} min {int(((rl["reset"] - time.time()) % 60))} sec'
+    )
+    # return num_tweets
 
 
 def get_query() -> query.Query:
