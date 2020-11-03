@@ -6,7 +6,6 @@ from sqlalchemy.orm import Session, query
 from . import models, schemas
 
 
-# TODO Pull nonlabeled tweets one at a time
 def unlabeled_tweet(db: Session) -> models.Tweet:
     """Returns a randomly selected unlabeled tweet for manual labeling"""
     unlabeled_tweets = (
@@ -15,7 +14,6 @@ def unlabeled_tweet(db: Session) -> models.Tweet:
     return unlabeled_tweets[np.random.randint(len(unlabeled_tweets))]
 
 
-# TODO Update a tweet with funny/notfunny given its label
 def label_tweet(db: Session, tweet_id: int, man_label: bool):
     """Updates the manual label for a tweet"""
     tweet_to_update = db.query(models.Tweet).get(tweet_id)
