@@ -1,6 +1,6 @@
 ## PREREQUISITES ## files used as input to create the target
 SHELL:=/usr/bin/env bash
-## Run the makefile by running "make"
+## Install make and run the makefile by running "make" in the project directory
 CONDA_ENV_NAME=twitter_project
 ## RULES ##
 # Create a conda environment called test_conda_1
