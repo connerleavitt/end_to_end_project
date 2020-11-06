@@ -1,0 +1,12 @@
+This is a package that sets up the ORM using SQLAlchemy and the api using FastAPI.
+    - __init__.py tells Python that this directory is a package and its files are modules
+    - database.py sets up the database connection
+    - models.py sets up the ORM object classes that we will be using
+    - schemas.py mirrors the object classes with table schemas for the ORM
+    - database_secrets.py contains the database endpoint, username, password, etc...
+    - crud.py contains the functions we will use to interact with the database
+        CRUD -> create, read, update, delete
+
+    # Only the files above are needed to use the ORM and the database
+
+    - main.py deals with the API endpoints and interacts with the ORM
