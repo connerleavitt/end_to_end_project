@@ -6,8 +6,6 @@ from sqlalchemy.orm import Session, query
 from . import models, schemas
 
 
-<<<<<<< HEAD
-=======
 def unlabeled_tweet(db: Session) -> models.Tweet:
     """Returns a randomly selected unlabeled tweet for manual labeling"""
     unlabeled_tweets = (
@@ -39,7 +37,7 @@ def read_tweet(db: Session, tweet_id: int) -> models.Tweet:
 def read_tweets(db: Session, skip: int = 0, limit: int = 100) -> List[models.Tweet]:
     """Uses the ORM to query the database for the first n=limit tweets"""
     return db.query(models.Tweet).offset(skip).limit(limit).all()
->>>>>>> 75e9f6581f27b21f05b2d2b07bc670082d8fe3b7
+
 
 
 def create_tweet(db: Session, tweet: schemas.TweetCreate) -> models.Tweet:
@@ -111,7 +109,7 @@ def delete_tweet(db: Session, tweet_id: int) -> models.Tweet:
     """Uses the ORM to delete a tweet by its id"""
     db.query(models.Tweet).filter(models.Tweet.id == tweet_id).delete()
     db.commit()
-<<<<<<< HEAD
+
 #Added functions get_users and get_unlabeled_tweets
 def get_users(db: Session) -> List[models.Tweet.usernames]:
 
@@ -120,7 +118,7 @@ def get_users(db: Session) -> List[models.Tweet.usernames]:
 def get_unlabeled_tweets(db: Session) -> List[models.Tweet.labeled]:
 
     return db.query((models.Tweet.labeled).filter(models.Tweet.labeled == False)).all()
-=======
+
 
 
 def delete_all_tweets(db: Session) -> models.Tweet:
@@ -133,4 +131,4 @@ def delete_user_tweets(db: Session, username: str) -> models.Tweet:
     """Uses the ORM to delete a tweet by its id"""
     db.query(models.Tweet).filter(models.Tweet.user == username).delete()
     db.commit()
->>>>>>> 75e9f6581f27b21f05b2d2b07bc670082d8fe3b7
+
