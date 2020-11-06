@@ -7,6 +7,10 @@ class TweetBase(BaseModel):
     text: str
     favorites: int
     is_retweet: bool
+    #updated usernames and labeled
+    usernames: str
+    labeled: int
+    is_funny: int
 
 
 class TweetCreate(TweetBase):

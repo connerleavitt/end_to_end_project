@@ -1,1 +1,1 @@
-[Insert requirements]
+uvicorn
