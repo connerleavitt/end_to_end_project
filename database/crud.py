@@ -119,7 +119,10 @@ def get_unlabeled_tweets(db: Session) -> List[models.Tweet.labeled]:
 
     return db.query((models.Tweet.labeled).filter(models.Tweet.labeled == False)).all()
 
-
+def update_tweet(db: Session, tweet_id: int, labeled: int, is_funny: int) -> models.Tweet:
+    """Update the tweet label_funny value"""
+    results = db.query(tweet_id, labeled, is_funny)
+    return results
 
 def delete_all_tweets(db: Session) -> models.Tweet:
     """Uses the ORM to delete all tweets"""
@@ -131,4 +134,13 @@ def delete_user_tweets(db: Session, username: str) -> models.Tweet:
     """Uses the ORM to delete a tweet by its id"""
     db.query(models.Tweet).filter(models.Tweet.user == username).delete()
     db.commit()
+
+
+
+
+# Added functions get_users and get_unlabeled_tweets
+
+
+def get_unlabeled_tweets(db: Session) -> List[models.Tweet.labeled]:
+    return db.query((models.Tweet.labeled).filter(models.Tweet.labeled == False)).all()
 

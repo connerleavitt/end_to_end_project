@@ -20,6 +20,12 @@ def get_db():
     finally:
         db.close()
 
+############## Usernames ##############
+@app.get("/users/", response_model=List[schemas.Tweet.usernames])
+def get_usernames(db: Session = Depends(get_db)):
+    users = crud.get_users(db)
+    return users
+
 ############## Tweets ##############
 @app.post("/tweets/", response_model=schemas.Tweet)
 def create_tweet(tweet: schemas.TweetCreate, db: Session = Depends(get_db)):
@@ -40,12 +46,6 @@ def read_tweet(tweet_id: int, db: Session = Depends(get_db)):
     if db_tweet is None:
         raise HTTPException(status_code=404, detail="Tweet not found")
     return db_tweet
-
-############## Usernames ##############
-@app.get("/users/", response_model=List[schemas.Tweet.usernames])
-def get_usernames(db: Session = Depends(get_db)):
-    users = crud.get_users(db)
-    return users
 
 ############## Unlabeled Tweets ##############
 #Get list of unlabeled tweets to further label
@@ -82,6 +82,4 @@ async def update_tweet(tweet_id: int, labeled: int, is_funny: int, db: Session =
 
     return db_tweet
 
-# How do I Update newly labeled tweets?
-# What is the way we can update the database after the tweet is clicked?
-#
+

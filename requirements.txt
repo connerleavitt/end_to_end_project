@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 uvicorn
-=======
+
 appdirs==1.4.4
 appnope==0.1.0
 argon2-cffi==20.1.0
@@ -107,4 +106,4 @@ virtualenv==20.0.31
 wcwidth==0.2.5
 webencodings==0.5.1
 widgetsnbextension==3.5.1
->>>>>>> 75e9f6581f27b21f05b2d2b07bc670082d8fe3b7
+
