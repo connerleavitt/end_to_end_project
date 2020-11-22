@@ -21,7 +21,7 @@ def get_db():
         db.close()
 
 ############## Usernames ##############
-@app.get("/users/", response_model=List[schemas.Tweet.usernames])
+@app.get("/users/", response_model=List[schemas.Tweet.user])
 def get_usernames(db: Session = Depends(get_db)):
     users = crud.get_users(db)
     return users
@@ -63,7 +63,7 @@ def read_tweet(tweet_id: int, db: Session = Depends(get_db)):
     return db_tweet
 
 @app.put("/unlabeled_tweets/{tweet_id}", response_model=schemas.Tweet)
-async def update_tweet(tweet_id: int, labeled: int, is_funny: int, db: Session = Depends(get_db)):
+async def update_tweet(tweet_id: int, labeled: bool, is_funny: bool, db: Session = Depends(get_db)):
     updated_is_funny = jsonable_encoder(is_funny)
     new_label = labeled
 
@@ -72,11 +72,11 @@ async def update_tweet(tweet_id: int, labeled: int, is_funny: int, db: Session =
     ## labeled
 
     ######### Items to persist #########
-    ## tweet_id = Column(Integer, primary_key=True, index=True)
-    ## text = Column(String, unique=True, index=True)
-    ## favorites = Column(Integer)
-    ## is_retweet = Column(Boolean, default=True)
-    ## usernames = Column(String)
+    # tweet_id = Column(Integer, primary_key=True, index=True)
+    # text = Column(String, unique=True, index=True)
+    # favorites = Column(Integer)
+    # is_retweet = Column(Boolean, default=True)
+    # usernames = Column(String)
 
     db_tweet = crud.update_tweet(db, tweet_id, updated_is_funny, new_label)
 

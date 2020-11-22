@@ -111,9 +111,9 @@ def delete_tweet(db: Session, tweet_id: int) -> models.Tweet:
     db.commit()
 
 #Added functions get_users and get_unlabeled_tweets
-def get_users(db: Session) -> List[models.Tweet.usernames]:
+def get_users(db: Session) -> List[models.Tweet.user]:
 
-    return db.query(models.Tweet.usernames)
+    return db.query(models.Tweet.user)
 
 def get_unlabeled_tweets(db: Session) -> List[models.Tweet.labeled]:
 
